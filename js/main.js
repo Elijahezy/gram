@@ -1,6 +1,4 @@
-/* eslint-disable arrow-body-style */
-/* eslint-disable prefer-template */
-/* eslint-disable id-length */
+
 const MAX_COMMENT_LENGTH = 140;
 const USER_PHOTO_DESCRIPTIONS = 25;
 const COMMENTS = [
@@ -18,7 +16,6 @@ const NAMES = [
   'Саша',
   'Вася',
 ];
-
 
 function getRandomPositiveInteger (a, b) {
   const lower = Math.ceil(Math.min(Math.abs(a), Math.abs(b)));
