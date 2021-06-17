@@ -32,14 +32,12 @@ const getRandomArrayElement = (elements) => {
   return elements[result];
 };
 
-const getRandomComment = () => {
-  return {
-    id: getRandomPositiveInteger(1,100),
-    avatar: 'img/avatar-' + getRandomPositiveInteger(1,6) + '.svg',
-    message: getRandomArrayElement(COMMENTS),
-    name: getRandomArrayElement(NAMES),
-  };
-};
+const getRandomComment = () => ({
+  id: getRandomPositiveInteger(1,100),
+  avatar: `img/avatar-${  getRandomPositiveInteger(1,6)  }.svg`,
+  message: getRandomArrayElement(COMMENTS),
+  name: getRandomArrayElement(NAMES),
+});
 
 const createPhotoDescriptions = () => {
   const photoDescriptions = [];
@@ -51,7 +49,7 @@ const createPhotoDescriptions = () => {
     }
     return {
       id: randomId,
-      url: 'photos/' + randomId + '.jpg',
+      url: `photos/${  randomId  }.jpg`,
       description: 'Квадрат Малевича',
       likes: getRandomPositiveInteger(15,200),
       comments: new Array(getRandomPositiveInteger(1,3)).fill(null).map(() => getRandomComment()),
@@ -65,6 +63,5 @@ const createPhotoDescriptions = () => {
   return photoDescriptions;
 };
 
-console.log(createPhotoDescriptions());
-
+createPhotoDescriptions();
 
