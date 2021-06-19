@@ -1,5 +1,5 @@
-import {getRandomPositiveInteger} from './get-random-positive-integer.js/';
-import {checkStringLength} from './check-string-length';
+import {getRandomPositiveInteger} from './get-random-positive-integer.js';
+import {checkStringLength} from './check-string-length.js';
 
 const MAX_COMMENT_LENGTH = 140;
 const USER_PHOTO_DESCRIPTIONS = 25;
