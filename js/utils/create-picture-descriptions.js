@@ -2,7 +2,7 @@ import {getRandomPositiveInteger} from './get-random-positive-integer.js';
 import {checkStringLength} from './check-string-length.js';
 
 const MAX_COMMENT_LENGTH = 140;
-const USER_PHOTO_DESCRIPTIONS = 25;
+const USER_PICTURE_DESCRIPTIONS = 25;
 const COMMENTS = [
   'Всё отлично!',
   'В целом всё неплохо. Но не всё.',
@@ -31,12 +31,12 @@ const getRandomComment = () => ({
   name: getRandomArrayElement(NAMES),
 });
 
-const createPhotoDescriptions = (numberOfDescriptions) => {
-  const photoDescriptions = [];
+const createPictureDescriptions = (numberOfDescriptions) => {
+  const pictureDescriptions = [];
 
-  const createSingleDescription = () => {
+  const createSingleElement = () => {
     let randomId = getRandomPositiveInteger(1, 25);
-    while (photoDescriptions.find((item) => item.id === randomId)) {
+    while (pictureDescriptions.find((item) => item.id === randomId)) {
       randomId = getRandomPositiveInteger(1, 25);
     }
     return {
@@ -48,13 +48,13 @@ const createPhotoDescriptions = (numberOfDescriptions) => {
     };
   };
 
-  while (photoDescriptions.length < numberOfDescriptions) {
-    photoDescriptions.push(createSingleDescription());
+  while (pictureDescriptions.length < numberOfDescriptions) {
+    pictureDescriptions.push(createSingleElement());
   }
 
-  return photoDescriptions;
+  return pictureDescriptions;
 };
 
 checkStringLength(115, MAX_COMMENT_LENGTH);
 
-export {createPhotoDescriptions, USER_PHOTO_DESCRIPTIONS};
+export {createPictureDescriptions, USER_PICTURE_DESCRIPTIONS};

@@ -1,3 +1,3 @@
-import {createPhotoDescriptions, USER_PHOTO_DESCRIPTIONS} from './utils/create-photo-descriptions.js';
+import {createPictureList} from './utils/create-picture-descriptions-small.js';
 
-createPhotoDescriptions(USER_PHOTO_DESCRIPTIONS);
+createPictureList();
