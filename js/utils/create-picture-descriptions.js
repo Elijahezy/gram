@@ -54,4 +54,6 @@ const createPictureDescriptions = (numberOfDescriptions) => {
 
 checkStringLength(115, MAX_COMMENT_LENGTH);
 
-export {createPictureDescriptions, USER_PICTURE_DESCRIPTIONS};
+const imgArray = createPictureDescriptions(USER_PICTURE_DESCRIPTIONS);
+
+export { imgArray };
