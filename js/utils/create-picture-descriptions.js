@@ -1,5 +1,6 @@
-import {getRandomPositiveInteger} from './get-random-positive-integer.js';
-import {checkStringLength} from './check-string-length.js';
+import { getRandomPositiveInteger } from './get-random-positive-integer.js';
+import { checkStringLength } from './check-string-length.js';
+import { getRandomArrayElement } from './utils.js';
 
 const MAX_COMMENT_LENGTH = 140;
 const USER_PICTURE_DESCRIPTIONS = 25;
@@ -19,10 +20,6 @@ const NAMES = [
   'Вася',
 ];
 
-const getRandomArrayElement = (elements) => {
-  const result = Math.floor(Math.random() * elements.length);
-  return elements[result];
-};
 
 const getRandomComment = () => ({
   id: getRandomPositiveInteger(1,100),
@@ -57,4 +54,6 @@ const createPictureDescriptions = (numberOfDescriptions) => {
 
 checkStringLength(115, MAX_COMMENT_LENGTH);
 
-export {createPictureDescriptions, USER_PICTURE_DESCRIPTIONS};
+const imgArray = createPictureDescriptions(USER_PICTURE_DESCRIPTIONS);
+
+export { imgArray };
