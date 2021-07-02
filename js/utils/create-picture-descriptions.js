@@ -1,5 +1,4 @@
 import { getRandomPositiveInteger } from './get-random-positive-integer.js';
-import { checkStringLength } from './check-string-length.js';
 import { getRandomArrayElement } from './utils.js';
 
 const MAX_COMMENT_LENGTH = 140;
@@ -52,8 +51,6 @@ const createPictureDescriptions = (numberOfDescriptions) => {
   return pictureDescriptions;
 };
 
-checkStringLength(115, MAX_COMMENT_LENGTH);
-
 const imgArray = createPictureDescriptions(USER_PICTURE_DESCRIPTIONS);
 
-export { imgArray };
+export { imgArray, MAX_COMMENT_LENGTH };
