@@ -1,5 +1,7 @@
 import { isEscEvent } from './utils.js';
 
+const buttonCloseModal = document.querySelector('.big-picture__cancel');
+
 const onPictureEscKeydown = (evt) => {
   if (isEscEvent(evt)) {
     evt.preventDefault();
@@ -27,6 +29,7 @@ function closePictureModal () {
   document.querySelector('.comments-loader').classList.remove('hidden');
 
   document.removeEventListener('keydown', onPictureEscKeydown);
+  buttonCloseModal.removeEventListener('click', closePictureModal);
 }
 
 
@@ -76,9 +79,9 @@ const showBigPicture = (array) => {
 
     const photo = array[dataClickImage];
     bigPictureTemplate(photo);
+    buttonCloseModal.addEventListener('click', closePictureModal);
   });
 
-  document.querySelector('.big-picture__cancel').addEventListener('click', closePictureModal);
 };
 
 export { showBigPicture };
