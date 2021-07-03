@@ -5,6 +5,12 @@ const getRandomArrayElement = (elements) => {
   return elements[result];
 };
 
-export {isEscEvent, getRandomArrayElement};
+const hasDuplicates = (array) => {
+  array = array.map((evt) => evt.toLowerCase());
+  return (new Set(array)).size !== array.length;
+};
+
+
+export {isEscEvent, getRandomArrayElement, hasDuplicates};
 
 

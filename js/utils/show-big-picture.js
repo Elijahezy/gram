@@ -1,14 +1,17 @@
 import { isEscEvent } from './utils.js';
 
+const buttonCloseModal = document.querySelector('.big-picture__cancel');
+
 const onPictureEscKeydown = (evt) => {
   if (isEscEvent(evt)) {
     evt.preventDefault();
     document.querySelector('.big-picture').classList.add('hidden');
-    document.body.classList.add('modal-open');
-    document.querySelector('.social__comment-count').classList.add('hidden');
-    document.querySelector('.comments-loader').classList.add('hidden');
+    document.body.classList.remove('modal-open');
+    document.querySelector('.social__comment-count').classList.remove('hidden');
+    document.querySelector('.comments-loader').classList.remove('hidden');
   }
 };
+
 
 function openPictureModal () {
   document.querySelector('.big-picture').classList.remove('hidden');
@@ -26,6 +29,7 @@ function closePictureModal () {
   document.querySelector('.comments-loader').classList.remove('hidden');
 
   document.removeEventListener('keydown', onPictureEscKeydown);
+  buttonCloseModal.removeEventListener('click', closePictureModal);
 }
 
 
@@ -64,22 +68,20 @@ const showBigPicture = (array) => {
 
   document.querySelector('.pictures').addEventListener('click', (evt) => {
     const dataClickImage = evt.target.getAttribute('data-image');
+    const target = evt.target;
+    const ignoreTarget = document.querySelector('.img-upload');
+
+    if (target === ignoreTarget || ignoreTarget.contains(target)) {
+      return;
+    }
 
     openPictureModal();
 
     const photo = array[dataClickImage];
     bigPictureTemplate(photo);
-
-
+    buttonCloseModal.addEventListener('click', closePictureModal);
   });
 
-  document.querySelector('.big-picture__cancel').addEventListener('click', () => {
-    closePictureModal();
-  });
-
-  document.querySelector('.big-picture__cancel').addEventListener('keydown', () => {
-    closePictureModal();
-  });
 };
 
 export { showBigPicture };
