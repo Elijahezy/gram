@@ -1,5 +1,6 @@
 import { isEscEvent } from './utils.js';
 import { MAX_COMMENT_LENGTH } from './create-picture-descriptions.js';
+import { hasDuplicates } from './utils.js';
 
 const uploadFileButton = document.querySelector('#upload-file');
 const imgUploadOverlay = document.querySelector('.img-upload__overlay');
@@ -8,11 +9,9 @@ const textHashtagsField = document.querySelector('.text__hashtags');
 const textDescriptionField = document.querySelector('.text__description');
 const imgUploadBtnCancel = document.querySelector('.img-upload__cancel');
 
-
-function openPictureModal () {
-  imgUploadOverlay.classList.remove('hidden');
-  document.body.classList.add('modal-open');
-}
+const ERROE_TEXT_VALIDATE = 'Хэштег должен начинаться со знака #, и не может содержать в себе спецсимволы';
+const ERROR_NO_REPEAT = 'Нельзя добавлять одинаковые хэштеги';
+const MAX_HASHTAGS_COUNT = 5;
 
 function closePictureDescriptionModal () {
   const valueLength = textDescriptionField.value.length;
@@ -27,19 +26,16 @@ function closePictureDescriptionModal () {
 function closePictureHashtagModal () {
   const arrayHashtags = textHashtagsField.value.trim().split(' ').filter((tag) => tag);
 
-  const hasDuplicates = (array) => {
-    array = array.map((evt) => evt.toLowerCase());
-    return (new Set(array)).size !== array.length;
-  };
-
   arrayHashtags.find((item) => {
-
     if (!/^#[A-Za-zА-ЯаЯ0-9]{1,19}$/.test(item)) {
-      textHashtagsField.setCustomValidity('Хэштег должен начинаться со знака #, и не может содержать в себе спецсимволы');
+      textHashtagsField.setCustomValidity(ERROE_TEXT_VALIDATE);
+      return textHashtagsField.reportValidity();
     } else if (hasDuplicates(arrayHashtags)) {
-      textHashtagsField.setCustomValidity('Нельзя добавлять одинаковые хэштеги');
+      textHashtagsField.setCustomValidity(ERROR_NO_REPEAT);
+      return textHashtagsField.reportValidity();
     } else if (arrayHashtags.length > 5) {
-      textHashtagsField.setCustomValidity('Нельзя добавлять больше 5 хэштегов');
+      textHashtagsField.setCustomValidity(MAX_HASHTAGS_COUNT);
+      return textHashtagsField.reportValidity();
     } else {
       textHashtagsField.setCustomValidity('');
     }
@@ -47,36 +43,42 @@ function closePictureHashtagModal () {
   });
 }
 
+const onPictureEscKeydown = (evt) => {
+  if (textHashtagsField === document.activeElement || textDescriptionField === document.activeElement) {
+    return;
+  }
+
+  if (isEscEvent(evt)) {
+    evt.preventDefault();
+    imgUploadOverlay.classList.add('hidden');
+    document.body.classList.remove('modal-open');
+
+    uploadFileButton.value = '';
+    textDescriptionField.value = '';
+
+    textDescriptionField.removeEventListener('input', closePictureDescriptionModal);
+    textHashtagsField.removeEventListener('input', closePictureHashtagModal);
+    document.removeEventListener('keydown', onPictureEscKeydown);
+  }
+};
+function openPictureModal () {
+  imgUploadOverlay.classList.remove('hidden');
+  document.body.classList.add('modal-open');
+  document.addEventListener('keydown', onPictureEscKeydown);
+}
+
 function closePictureModal () {
   imgUploadOverlay.classList.add('hidden');
   document.body.classList.remove('modal-open');
-  imgPreview.src = '';
-  textHashtagsField.value = '';
-  textDescriptionField.textContent = '';
+
+  uploadFileButton.value = '';
+  textDescriptionField.value = '';
 
   imgUploadBtnCancel.removeEventListener('click', closePictureModal);
   textDescriptionField.removeEventListener('input', closePictureDescriptionModal);
   textHashtagsField.removeEventListener('input', closePictureHashtagModal);
+  document.removeEventListener('keydown', onPictureEscKeydown);
 }
-
-function onPictureCloseClick() {
-  closePictureModal();
-}
-const onPictureEscKeydown = (evt) => {
-  if (evt.target.tagName === 'TEXTAREA' || evt.target.tagName === 'Hashtag') {
-    return;
-  }
-  imgPreview.src = '';
-  textHashtagsField.value = '';
-  textDescriptionField.textContent = '';
-
-  if (isEscEvent(evt)) {
-    evt.preventDefault();
-    onPictureCloseClick();
-    document.removeEventListener('keydown', onPictureEscKeydown);
-  }
-};
-
 
 uploadFileButton.addEventListener('change', () => {
   const reader = new FileReader();
@@ -86,7 +88,7 @@ uploadFileButton.addEventListener('change', () => {
     imgPreview.src = reader.result;
 
     openPictureModal();
-    document.addEventListener('keydown', onPictureEscKeydown);
+    // document.addEventListener('keydown', onPictureCloseClick);
     textHashtagsField.addEventListener('input', closePictureHashtagModal);
 
     textDescriptionField.addEventListener('input', closePictureDescriptionModal);
