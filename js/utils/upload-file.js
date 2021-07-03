@@ -8,25 +8,10 @@ const textHashtagsField = document.querySelector('.text__hashtags');
 const textDescriptionField = document.querySelector('.text__description');
 const imgUploadBtnCancel = document.querySelector('.img-upload__cancel');
 
-const onPictureEscKeydown = (evt) => {
-  if (evt.target.tagName === 'TEXTAREA' || evt.target.tagName === 'Hashtag') {
-    return;
-  }
-
-  if (isEscEvent(evt)) {
-    evt.preventDefault();
-    imgUploadOverlay.classList.add('hidden');
-    document.body.classList.remove('modal-open');
-    imgPreview.src = '';
-    textHashtagsField.value = '';
-    textDescriptionField.textContent = '';
-  }
-};
 
 function openPictureModal () {
   imgUploadOverlay.classList.remove('hidden');
   document.body.classList.add('modal-open');
-
 }
 
 function closePictureDescriptionModal () {
@@ -72,8 +57,25 @@ function closePictureModal () {
   imgUploadBtnCancel.removeEventListener('click', closePictureModal);
   textDescriptionField.removeEventListener('input', closePictureDescriptionModal);
   textHashtagsField.removeEventListener('input', closePictureHashtagModal);
-  document.removeEventListener('keydown', onPictureEscKeydown);
 }
+
+function onPictureCloseClick() {
+  closePictureModal();
+}
+const onPictureEscKeydown = (evt) => {
+  if (evt.target.tagName === 'TEXTAREA' || evt.target.tagName === 'Hashtag') {
+    return;
+  }
+  imgPreview.src = '';
+  textHashtagsField.value = '';
+  textDescriptionField.textContent = '';
+
+  if (isEscEvent(evt)) {
+    evt.preventDefault();
+    onPictureCloseClick();
+    document.removeEventListener('keydown', onPictureEscKeydown);
+  }
+};
 
 
 uploadFileButton.addEventListener('change', () => {
@@ -84,7 +86,7 @@ uploadFileButton.addEventListener('change', () => {
     imgPreview.src = reader.result;
 
     openPictureModal();
-
+    document.addEventListener('keydown', onPictureEscKeydown);
     textHashtagsField.addEventListener('input', closePictureHashtagModal);
 
     textDescriptionField.addEventListener('input', closePictureDescriptionModal);
