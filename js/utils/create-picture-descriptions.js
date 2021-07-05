@@ -40,7 +40,7 @@ const createPictureDescriptions = (numberOfDescriptions) => {
       url: `photos/${  randomId  }.jpg`,
       description: 'Квадрат Малевича',
       likes: getRandomPositiveInteger(15,200),
-      comments: new Array(getRandomPositiveInteger(1,3)).fill(null).map(() => getRandomComment()),
+      comments: new Array(getRandomPositiveInteger(1,18)).fill(null).map(() => getRandomComment()),
     };
   };
 
