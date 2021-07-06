@@ -1,6 +1,5 @@
 const similarPicturesTemplate = document.querySelector('#picture').content;
 const similarPicturesList = document.querySelector('.pictures');
-
 const similarFragmentsList = document.createDocumentFragment();
 
 const createPictureList = (similarElements) => {
