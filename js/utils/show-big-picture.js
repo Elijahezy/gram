@@ -45,7 +45,7 @@ const showMoreComments = () => {
   } else {
     commentsLoaderButton.classList.remove('hidden');
   }
-  bigPictureCommentCount.innerHTML = `${numberComments} из <span class="comments-count">${currentComments.length}</span> комментариев`;
+  bigPictureCommentCount.textContent = `${numberComments} из ${currentComments.length} комментариев`;
 };
 
 const onPictureEscKeydown = (evt) => {

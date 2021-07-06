@@ -12,7 +12,7 @@ const imgUploadBtnCancel = document.querySelector('.img-upload__cancel');
 const ERROE_TEXT_VALIDATE = 'Хэштег должен начинаться со знака #, и не может содержать в себе спецсимволы';
 const ERROR_NO_REPEAT = 'Нельзя добавлять одинаковые хэштеги';
 const MAX_HASHTAGS_COUNT = 5;
-const re = /^#[A-Za-zА-ЯаЯ0-9]{1,19}$/;
+const regExp = /^#[A-Za-zА-ЯаЯ0-9]{1,19}$/;
 
 function closePictureDescriptionModal () {
   const valueLength = textDescriptionField.value.length;
@@ -28,7 +28,7 @@ function closePictureHashtagModal () {
   const arrayHashtags = textHashtagsField.value.trim().split(' ').filter((tag) => tag);
 
   arrayHashtags.find((item) => {
-    if (!re.test(item)) {
+    if (!regExp.test(item)) {
       textHashtagsField.setCustomValidity(ERROE_TEXT_VALIDATE);
       return textHashtagsField.reportValidity();
     } else if (hasDuplicates(arrayHashtags)) {
