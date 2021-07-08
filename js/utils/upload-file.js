@@ -1,15 +1,17 @@
 import { isEscEvent } from './utils.js';
 import { MAX_COMMENT_LENGTH } from './create-picture-descriptions.js';
 import { hasDuplicates } from './utils.js';
+import { activateScaleChanger, deactivateScaleChanger, CURRENT_CONTROL_VALUE } from './scale-control.js';
 
 const uploadFileButton = document.querySelector('#upload-file');
 const imgUploadOverlay = document.querySelector('.img-upload__overlay');
-const imgPreview = document.querySelector('.img-upload__preview > img');
+const imgPreview = document.querySelector('.img-upload__preview img');
 const textHashtagsField = document.querySelector('.text__hashtags');
 const textDescriptionField = document.querySelector('.text__description');
 const imgUploadBtnCancel = document.querySelector('.img-upload__cancel');
+const scaleValue = document.querySelector('.scale__control--value');
 
-const ERROE_TEXT_VALIDATE = 'Хэштег должен начинаться со знака #, и не может содержать в себе спецсимволы';
+const ERROR_TEXT_VALIDATE = 'Хэштег должен начинаться со знака #, и не может содержать в себе спецсимволы';
 const ERROR_NO_REPEAT = 'Нельзя добавлять одинаковые хэштеги';
 const MAX_HASHTAGS_COUNT = 5;
 const regExp = /^#[A-Za-zА-ЯаЯ0-9]{1,19}$/;
@@ -29,7 +31,7 @@ function closePictureHashtagModal () {
 
   arrayHashtags.find((item) => {
     if (!regExp.test(item)) {
-      textHashtagsField.setCustomValidity(ERROE_TEXT_VALIDATE);
+      textHashtagsField.setCustomValidity(ERROR_TEXT_VALIDATE);
       return textHashtagsField.reportValidity();
     } else if (hasDuplicates(arrayHashtags)) {
       textHashtagsField.setCustomValidity(ERROR_NO_REPEAT);
@@ -56,7 +58,8 @@ const onPictureEscKeydown = (evt) => {
 
     uploadFileButton.value = '';
     textDescriptionField.value = '';
-
+    imgPreview.className = 'effects__preview--none';
+    deactivateScaleChanger();
     textDescriptionField.removeEventListener('input', closePictureDescriptionModal);
     textHashtagsField.removeEventListener('input', closePictureHashtagModal);
     document.removeEventListener('keydown', onPictureEscKeydown);
@@ -72,9 +75,10 @@ function closePictureModal () {
   imgUploadOverlay.classList.add('hidden');
   document.body.classList.remove('modal-open');
 
+  imgPreview.className = 'effects__preview--none';
   uploadFileButton.value = '';
   textDescriptionField.value = '';
-
+  deactivateScaleChanger();
   imgUploadBtnCancel.removeEventListener('click', closePictureModal);
   textDescriptionField.removeEventListener('input', closePictureDescriptionModal);
   textHashtagsField.removeEventListener('input', closePictureHashtagModal);
@@ -89,11 +93,16 @@ uploadFileButton.addEventListener('change', () => {
     imgPreview.src = reader.result;
 
     openPictureModal();
+
+    scaleValue.value = `${100  }%`;
+    imgPreview.style.transform = `scale(${CURRENT_CONTROL_VALUE})`;
+
+    activateScaleChanger();
     textHashtagsField.addEventListener('input', closePictureHashtagModal);
 
     textDescriptionField.addEventListener('input', closePictureDescriptionModal);
 
     imgUploadBtnCancel.addEventListener('click', closePictureModal);
   };
-
 }, false);
+
