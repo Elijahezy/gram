@@ -9,7 +9,7 @@ const MIN_VALUE = 25;
 
 
 const increaseScale = () => {
-  let value = Number(scaleValue.value.replace(/[^\d]/g, ''));
+  let value = +scaleValue.value.replace(/[^\d]/g, '');
   if (value < MAX_VALUE) {
     scaleValue.value = `${value += SCALE_VALUE_STEP}%`;
     imgPreview.style.transform = `scale(${value/100})`;
@@ -17,7 +17,7 @@ const increaseScale = () => {
 };
 
 const decreaseScale = () => {
-  let value = Number(scaleValue.value.replace(/[^\d]/g, ''));
+  let value = +scaleValue.value.replace(/[^\d]/g, '');
   if (value > MIN_VALUE) {
     scaleValue.value = `${value -= SCALE_VALUE_STEP}`;
     imgPreview.style.transform = `scale(${value/100})`;

@@ -2,6 +2,7 @@ import { isEscEvent } from './utils.js';
 import { MAX_COMMENT_LENGTH } from './create-picture-descriptions.js';
 import { hasDuplicates } from './utils.js';
 import { activateScaleChanger, deactivateScaleChanger, CURRENT_CONTROL_VALUE } from './scale-control.js';
+import { onEffects, offEffects } from './effects-slider.js';
 
 const uploadFileButton = document.querySelector('#upload-file');
 const imgUploadOverlay = document.querySelector('.img-upload__overlay');
@@ -58,8 +59,9 @@ const onPictureEscKeydown = (evt) => {
 
     uploadFileButton.value = '';
     textDescriptionField.value = '';
-    imgPreview.className = 'effects__preview--none';
+
     deactivateScaleChanger();
+    offEffects();
     textDescriptionField.removeEventListener('input', closePictureDescriptionModal);
     textHashtagsField.removeEventListener('input', closePictureHashtagModal);
     document.removeEventListener('keydown', onPictureEscKeydown);
@@ -69,16 +71,22 @@ function openPictureModal () {
   imgUploadOverlay.classList.remove('hidden');
   document.body.classList.add('modal-open');
   document.addEventListener('keydown', onPictureEscKeydown);
+  scaleValue.value = `${100  }%`;
+  imgPreview.style.transform = `scale(${CURRENT_CONTROL_VALUE})`;
+
+  activateScaleChanger();
+  onEffects();
 }
 
 function closePictureModal () {
   imgUploadOverlay.classList.add('hidden');
   document.body.classList.remove('modal-open');
 
-  imgPreview.className = 'effects__preview--none';
+
   uploadFileButton.value = '';
   textDescriptionField.value = '';
   deactivateScaleChanger();
+  offEffects();
   imgUploadBtnCancel.removeEventListener('click', closePictureModal);
   textDescriptionField.removeEventListener('input', closePictureDescriptionModal);
   textHashtagsField.removeEventListener('input', closePictureHashtagModal);
@@ -94,10 +102,6 @@ uploadFileButton.addEventListener('change', () => {
 
     openPictureModal();
 
-    scaleValue.value = `${100  }%`;
-    imgPreview.style.transform = `scale(${CURRENT_CONTROL_VALUE})`;
-
-    activateScaleChanger();
     textHashtagsField.addEventListener('input', closePictureHashtagModal);
 
     textDescriptionField.addEventListener('input', closePictureDescriptionModal);
