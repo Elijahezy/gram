@@ -2,9 +2,11 @@ const sliderElement = document.querySelector('.effect-level__slider');
 const effectLevelValue = document.querySelector('.effect-level__value');
 const imgPreview = document.querySelector('.img-upload__preview img');
 const userForm = document.querySelector('.img-upload__form');
+const sliderForm = document.querySelector('.img-upload__effect-level');
 
 const NONE_EFFECT = 'none';
 let currentEffect;
+sliderForm.classList.add('hidden');
 
 const effectToOptions = {
   chrome: {
@@ -75,16 +77,6 @@ const effectToOptions = {
 };
 
 
-noUiSlider.create(sliderElement, {
-  range: {
-    min: 0,
-    max: 1,
-  },
-  start: 0.8,
-  step: 0.1,
-  connect: 'lower',
-});
-
 const turnEffectLevel = (effectName) => {
   const {
     options,
@@ -93,11 +85,12 @@ const turnEffectLevel = (effectName) => {
   } = effectToOptions[effectName];
 
   if (sliderElement.noUiSlider) {
+    sliderElement.noUiSlider.off();
     sliderElement.noUiSlider.updateOptions(options);
   } else {
     noUiSlider.create(sliderElement, options);
   }
-
+  sliderForm.classList.remove('hidden');
   sliderElement.noUiSlider.on('update', (_, handle, unencoded) => {
     const value = unencoded[handle];
     effectLevelValue.value = value;
@@ -108,10 +101,12 @@ const turnEffectLevel = (effectName) => {
 
 const destroyEffectLevel = () => {
   if (sliderElement.noUiSlider) {
+    sliderElement.noUiSlider.off();
     sliderElement.noUiSlider.destroy();
   }
   effectLevelValue.value = '';
   imgPreview.style.filter = '';
+  sliderForm.classList.add('hidden');
 };
 
 const onFilterChange = (evt) => {
