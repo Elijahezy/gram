@@ -1,12 +1,15 @@
 import { isEscEvent } from './utils.js';
-import { MAX_COMMENT_LENGTH } from './create-picture-descriptions.js';
+import { MAX_COMMENT_LENGTH } from './utils.js';
 import { hasDuplicates } from './utils.js';
 import { activateScaleChanger, deactivateScaleChanger, CURRENT_CONTROL_VALUE } from './scale-control.js';
 import { onEffects, offEffects } from './effects-slider.js';
+import { sendData } from './api.js';
+import { showSuccessMessage, showErrorMessage } from './modal-message.js';
 
 const uploadFileButton = document.querySelector('#upload-file');
 const imgUploadOverlay = document.querySelector('.img-upload__overlay');
 const imgPreview = document.querySelector('.img-upload__preview img');
+const imgUploadForm = document.querySelector('.img-upload__form');
 const textHashtagsField = document.querySelector('.text__hashtags');
 const textDescriptionField = document.querySelector('.text__description');
 const imgUploadBtnCancel = document.querySelector('.img-upload__cancel');
@@ -47,7 +50,7 @@ function closePictureHashtagModal () {
   });
 }
 
-const onPictureEscKeydown = (evt) => {
+const onUploadModalEscKeydown = (evt) => {
   if (textHashtagsField === document.activeElement || textDescriptionField === document.activeElement) {
     return;
   }
@@ -64,13 +67,13 @@ const onPictureEscKeydown = (evt) => {
     offEffects();
     textDescriptionField.removeEventListener('input', closePictureDescriptionModal);
     textHashtagsField.removeEventListener('input', closePictureHashtagModal);
-    document.removeEventListener('keydown', onPictureEscKeydown);
+    document.removeEventListener('keydown', onUploadModalEscKeydown);
   }
 };
-function openPictureModal () {
+function openUploadModal () {
   imgUploadOverlay.classList.remove('hidden');
   document.body.classList.add('modal-open');
-  document.addEventListener('keydown', onPictureEscKeydown);
+  document.addEventListener('keydown', onUploadModalEscKeydown);
   scaleValue.value = `${100  }%`;
   imgPreview.style.transform = `scale(${CURRENT_CONTROL_VALUE})`;
 
@@ -78,7 +81,7 @@ function openPictureModal () {
   onEffects();
 }
 
-function closePictureModal () {
+function closeUploadModal () {
   imgUploadOverlay.classList.add('hidden');
   document.body.classList.remove('modal-open');
 
@@ -87,10 +90,10 @@ function closePictureModal () {
   textDescriptionField.value = '';
   deactivateScaleChanger();
   offEffects();
-  imgUploadBtnCancel.removeEventListener('click', closePictureModal);
+  imgUploadBtnCancel.removeEventListener('click', closeUploadModal);
   textDescriptionField.removeEventListener('input', closePictureDescriptionModal);
   textHashtagsField.removeEventListener('input', closePictureHashtagModal);
-  document.removeEventListener('keydown', onPictureEscKeydown);
+  document.removeEventListener('keydown', onUploadModalEscKeydown);
 }
 
 uploadFileButton.addEventListener('change', () => {
@@ -100,13 +103,28 @@ uploadFileButton.addEventListener('change', () => {
   reader.onload = () => {
     imgPreview.src = reader.result;
 
-    openPictureModal();
+    openUploadModal();
 
     textHashtagsField.addEventListener('input', closePictureHashtagModal);
 
     textDescriptionField.addEventListener('input', closePictureDescriptionModal);
 
-    imgUploadBtnCancel.addEventListener('click', closePictureModal);
+    imgUploadBtnCancel.addEventListener('click', closeUploadModal);
   };
 }, false);
 
+
+const setUserFormSubmit = () => {
+  imgUploadForm.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+    imgUploadOverlay.classList.add('hidden');
+    document.body.classList.remove('modal-open');
+    sendData(
+      showSuccessMessage,
+      showErrorMessage,
+      new FormData(evt.target),
+    );
+  });
+};
+
+export { setUserFormSubmit, closeUploadModal};

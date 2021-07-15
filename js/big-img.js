@@ -2,17 +2,16 @@ import { isEscEvent } from './utils.js';
 
 const AVATAR_SIZE = 35;
 const COMMENTS_STEP = 5;
-
 const bigPicture = document.querySelector('.big-picture');
 const bigPictureImg = bigPicture.querySelector('.big-picture__img > img');
-const pictureDescription = bigPicture.querySelector('.social__caption');
-const likesCount = bigPicture.querySelector('.likes-count');
+const socialDescription = bigPicture.querySelector('.social__caption');
+const socialLikes = bigPicture.querySelector('.likes-count');
+const socialCommentCount = bigPicture.querySelector('.social__comment-count');
 const commentsCount = bigPicture.querySelector('.comments-count');
 const commentsList = bigPicture.querySelector('.social__comments');
 const pictureCloseElement = document.querySelector('.big-picture__cancel');
-const bigPictureCommentCount = bigPicture.querySelector('.social__comment-count');
 const commentsLoaderButton = bigPicture.querySelector('.comments-loader');
-const ignoreTarget = document.querySelector('.img-upload');
+const uploadButtonToIgnore = document.querySelector('.img-upload');
 
 let currentComments = [];
 
@@ -45,7 +44,7 @@ const showMoreComments = () => {
   } else {
     commentsLoaderButton.classList.remove('hidden');
   }
-  bigPictureCommentCount.textContent = `${numberComments} из ${currentComments.length} комментариев`;
+  socialCommentCount.textContent = `${numberComments} из ${currentComments.length} комментариев`;
 };
 
 const onPictureEscKeydown = (evt) => {
@@ -53,7 +52,6 @@ const onPictureEscKeydown = (evt) => {
     evt.preventDefault();
     bigPicture.classList.add('hidden');
     document.body.classList.remove('modal-open');
-
     commentsLoaderButton.removeEventListener('click', showMoreComments);
     document.removeEventListener('keydown', onPictureEscKeydown);
   }
@@ -80,9 +78,9 @@ const showBigPicture = (array) => {
 
   const bigPictureTemplate = (element) => {
     bigPictureImg.src = element.url;
-    likesCount.textContent = element.likes;
+    socialLikes.textContent = element.likes;
     commentsCount.textContent = element.comments.length;
-    pictureDescription.textContent = element.description;
+    socialDescription.textContent = element.description;
     commentsList.innerHTML = '';
     currentComments = element.comments;
     showMoreComments(element.comments);
@@ -93,7 +91,7 @@ const showBigPicture = (array) => {
     const target = evt.target;
     const photo = array[dataClickImage];
 
-    if (target === ignoreTarget || ignoreTarget.contains(target)) {
+    if (target === uploadButtonToIgnore || uploadButtonToIgnore.contains(target)) {
       return;
     }
 
