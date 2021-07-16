@@ -1,4 +1,4 @@
-import { isEscEvent } from './utils.js';
+import { openPictureModal, closePictureModal } from './user-modals.js';
 
 const AVATAR_SIZE = 35;
 const COMMENTS_STEP = 5;
@@ -47,33 +47,6 @@ const showMoreComments = () => {
   socialCommentCount.textContent = `${numberComments} из ${currentComments.length} комментариев`;
 };
 
-const onPictureEscKeydown = (evt) => {
-  if (isEscEvent(evt)) {
-    evt.preventDefault();
-    bigPicture.classList.add('hidden');
-    document.body.classList.remove('modal-open');
-    commentsLoaderButton.removeEventListener('click', showMoreComments);
-    document.removeEventListener('keydown', onPictureEscKeydown);
-  }
-};
-
-function openPictureModal () {
-  bigPicture.classList.remove('hidden');
-  document.body.classList.add('modal-open');
-
-  document.addEventListener('keydown', onPictureEscKeydown);
-  commentsLoaderButton.addEventListener('click', showMoreComments);
-}
-
-function closePictureModal () {
-  bigPicture.classList.add('hidden');
-  document.body.classList.remove('modal-open');
-
-  commentsLoaderButton.removeEventListener('click', showMoreComments);
-  document.removeEventListener('keydown', onPictureEscKeydown);
-  pictureCloseElement.removeEventListener('click', closePictureModal);
-}
-
 const showBigPicture = (array) => {
 
   const bigPictureTemplate = (element) => {
@@ -101,4 +74,4 @@ const showBigPicture = (array) => {
   });
 };
 
-export { showBigPicture };
+export { showBigPicture, showMoreComments };

@@ -22,16 +22,7 @@ const hasDuplicates = (array) => {
   return (new Set(array)).size !== array.length;
 };
 
-function getRandomPositiveInteger (a, b) {
-  const lower = Math.ceil(Math.min(Math.abs(a), Math.abs(b)));
-  const upper = Math.floor(Math.max(Math.abs(a), Math.abs(b)));
-  const result = Math.random() * (upper - lower + 1) + lower;
-  return Math.floor(result);
-}
-
-function checkStringLength (string, length) {
-  return string <= length;
-}
+const checkStringLength  = (string, length) => string <= length;
 
 const showAlert = (message) => {
   const alertContainer = document.createElement('div');
@@ -54,6 +45,6 @@ const showAlert = (message) => {
   }, ALERT_SHOW_TIME);
 };
 
-export {isEscEvent, getRandomArrayElement, hasDuplicates, getRandomPositiveInteger, checkStringLength, showAlert, onMessageKeydown, MAX_COMMENT_LENGTH };
+export {isEscEvent, getRandomArrayElement, hasDuplicates, checkStringLength, showAlert, onMessageKeydown, MAX_COMMENT_LENGTH };
 
 

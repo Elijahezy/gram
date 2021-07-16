@@ -6,16 +6,15 @@ import './upload-form.js';
 import { createPictureList } from './thumbnail.js';
 import { showBigPicture } from './big-img.js';
 import { getData } from './api.js';
-import { showAlert } from './utils.js';
-import { setUserFormSubmit, closeUploadModal } from './upload-form.js';
+import { setUserFormSubmit } from './upload-form.js';
+import { closeUploadModal } from './user-modals.js';
 
-
-const dataPromise = getData(() => showAlert('Не удалось получить данные с сервера. Попробуйте ещё раз.'));
+const dataPromise = getData(() => {});
 
 dataPromise
   .then(createPictureList);
 
-dataPromise.then(showBigPicture);
+dataPromise
+  .then(showBigPicture);
 
 setUserFormSubmit(closeUploadModal);
-
