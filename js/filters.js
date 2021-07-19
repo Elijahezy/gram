@@ -1,5 +1,5 @@
 import { createPictureList } from './thumbnail.js';
-import { shuffle, debounce } from './utils.js';
+import { debounce } from './utils.js';
 
 const NUMBER_RANDOM_PICTURES = 10;
 const RERENDER_DELAY = 500;
@@ -32,13 +32,13 @@ const getDefaultPictures = (pictures) => {
 };
 
 const getRandomPictures = (pictures) => {
-  const randomPictures = shuffle(pictures).slice(0, NUMBER_RANDOM_PICTURES);
+  const randomPictures = pictures.sort(() => Math.random() - 0.5).slice(0, NUMBER_RANDOM_PICTURES);
   return randomPictures;
 };
 
 const getDiscussedPictures = (pictures) => {
-  const discussedPictures = pictures.sort((a, b) => a.comments.length > b.comments.length ? 1 : -1);
-  return discussedPictures.reverse();
+  const discussedPictures = pictures.sort((a, b) => a.comments.length < b.comments.length ? 1 : -1);
+  return discussedPictures;
 };
 
 const setFilter = (evt, pictures) => {
