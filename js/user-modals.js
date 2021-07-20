@@ -1,5 +1,5 @@
 import { isEscEvent } from './utils.js';
-import { showMoreComments } from './big-img.js';
+import { onShowMoreComments } from './big-img.js';
 import { MAX_COMMENT_LENGTH } from './utils.js';
 import { hasDuplicates } from './utils.js';
 import { activateScaleChanger, deactivateScaleChanger, CURRENT_CONTROL_VALUE } from './scale-control.js';
@@ -29,7 +29,7 @@ const onPictureEscKeydown = (evt) => {
     bigPicture.classList.add('hidden');
     document.body.classList.remove('modal-open');
 
-    commentsLoaderButton.removeEventListener('click', showMoreComments);
+    commentsLoaderButton.removeEventListener('click', onShowMoreComments);
     document.removeEventListener('keydown', onPictureEscKeydown);
   }
 };
@@ -39,21 +39,21 @@ function openPictureModal () {
   document.body.classList.add('modal-open');
 
   document.addEventListener('keydown', onPictureEscKeydown);
-  commentsLoaderButton.addEventListener('click', showMoreComments);
+  commentsLoaderButton.addEventListener('click', onShowMoreComments);
 }
 
-function closePictureModal () {
+function onClosePictureModal () {
   bigPicture.classList.add('hidden');
   document.body.classList.remove('modal-open');
 
-  commentsLoaderButton.removeEventListener('click', showMoreComments);
+  commentsLoaderButton.removeEventListener('click', onShowMoreComments);
   document.removeEventListener('keydown', onPictureEscKeydown);
-  pictureCloseButton.removeEventListener('click', closePictureModal);
+  pictureCloseButton.removeEventListener('click', onClosePictureModal);
 }
 
 // Код для закрытия загрузки изображения
 
-function closePictureDescriptionModal () {
+function onClosePictureDescriptionModal () {
   const valueLength = textDescriptionField.value.length;
   if (valueLength > MAX_COMMENT_LENGTH) {
     textDescriptionField.setCustomValidity(`Удалите лишние ${  valueLength - MAX_COMMENT_LENGTH } симв.`);
@@ -63,7 +63,7 @@ function closePictureDescriptionModal () {
   textDescriptionField.reportValidity();
 }
 
-function closePictureHashtagModal () {
+function onClosePictureHashtagModal () {
   const arrayHashtags = textHashtagsField.value.trim().split(' ').filter((tag) => tag);
 
   arrayHashtags.find((item) => {
@@ -99,8 +99,8 @@ const onUploadModalEscKeydown = (evt) => {
     deactivateScaleChanger();
     offEffects();
 
-    textDescriptionField.removeEventListener('input', closePictureDescriptionModal);
-    textHashtagsField.removeEventListener('input', closePictureHashtagModal);
+    textDescriptionField.removeEventListener('input', onClosePictureDescriptionModal);
+    textHashtagsField.removeEventListener('input', onClosePictureHashtagModal);
     document.removeEventListener('keydown', onUploadModalEscKeydown);
   }
 };
@@ -112,14 +112,14 @@ function openUploadModal () {
   imgPreview.style.transform = `scale(${CURRENT_CONTROL_VALUE})`;
 
   document.addEventListener('keydown', onUploadModalEscKeydown);
-  textHashtagsField.addEventListener('input', closePictureHashtagModal);
-  textDescriptionField.addEventListener('input', closePictureDescriptionModal);
+  textHashtagsField.addEventListener('input', onClosePictureHashtagModal);
+  textDescriptionField.addEventListener('input', onClosePictureDescriptionModal);
 
   activateScaleChanger();
   onEffects();
 }
 
-function closeUploadModal () {
+function onCloseUploadModal () {
   imgUploadOverlay.classList.add('hidden');
   document.body.classList.remove('modal-open');
 
@@ -129,10 +129,10 @@ function closeUploadModal () {
   deactivateScaleChanger();
   offEffects();
 
-  imgCancelUpload.removeEventListener('click', closeUploadModal);
-  textDescriptionField.removeEventListener('input', closePictureDescriptionModal);
-  textHashtagsField.removeEventListener('input', closePictureHashtagModal);
+  imgCancelUpload.removeEventListener('click', onCloseUploadModal);
+  textDescriptionField.removeEventListener('input', onClosePictureDescriptionModal);
+  textHashtagsField.removeEventListener('input', onClosePictureHashtagModal);
   document.removeEventListener('keydown', onUploadModalEscKeydown);
 }
 
-export { openPictureModal, closePictureModal, openUploadModal, closeUploadModal };
+export { openPictureModal, onClosePictureModal, openUploadModal, onCloseUploadModal };

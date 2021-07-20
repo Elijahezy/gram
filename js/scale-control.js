@@ -8,7 +8,7 @@ const MAX_VALUE = 100;
 const MIN_VALUE = 25;
 
 
-const increaseScale = () => {
+const onIncreaseScale = () => {
   let value = +scaleValue.value.replace(/[^\d]/g, '');
   if (value < MAX_VALUE) {
     scaleValue.value = `${value += SCALE_VALUE_STEP}%`;
@@ -16,7 +16,7 @@ const increaseScale = () => {
   } scaleValue.value = `${value}%`;
 };
 
-const decreaseScale = () => {
+const onDecreaseScale = () => {
   let value = +scaleValue.value.replace(/[^\d]/g, '');
   if (value > MIN_VALUE) {
     scaleValue.value = `${value -= SCALE_VALUE_STEP}`;
@@ -25,13 +25,13 @@ const decreaseScale = () => {
 };
 
 const activateScaleChanger = () => {
-  btnScaleBigger.addEventListener('click', increaseScale);
-  btnScaleSmaller.addEventListener('click', decreaseScale);
+  btnScaleBigger.addEventListener('click', onIncreaseScale);
+  btnScaleSmaller.addEventListener('click', onDecreaseScale);
 };
 
 const deactivateScaleChanger = () => {
-  btnScaleBigger.removeEventListener('click', increaseScale);
-  btnScaleSmaller.removeEventListener('click', decreaseScale);
+  btnScaleBigger.removeEventListener('click', onIncreaseScale);
+  btnScaleSmaller.removeEventListener('click', onDecreaseScale);
   scaleValue.value = `${MAX_VALUE}%`;
 };
 

@@ -12,17 +12,10 @@ const onMessageKeydown = (evt) => {
   }
 };
 
-const getRandomArrayElement = (elements) => {
-  const result = Math.floor(Math.random() * elements.length);
-  return elements[result];
-};
-
 const hasDuplicates = (array) => {
   array = array.map((evt) => evt.toLowerCase());
   return (new Set(array)).size !== array.length;
 };
-
-const checkStringLength  = (string, length) => string <= length;
 
 const showAlert = (message) => {
   const alertContainer = document.createElement('div');
@@ -57,6 +50,6 @@ const debounce = (callback, timeoutDelay = 500) => {
   };
 };
 
-export {isEscEvent, getRandomArrayElement, hasDuplicates, checkStringLength, showAlert, onMessageKeydown, MAX_COMMENT_LENGTH, debounce };
+export {isEscEvent, hasDuplicates, showAlert, onMessageKeydown, MAX_COMMENT_LENGTH, debounce };
 
 

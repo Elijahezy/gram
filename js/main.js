@@ -9,7 +9,7 @@ import { createPictureList } from './thumbnail.js';
 import { showBigPicture } from './big-img.js';
 import { getData } from './api.js';
 import { setUserFormSubmit } from './upload-form.js';
-import { closeUploadModal } from './user-modals.js';
+import { onCloseUploadModal } from './user-modals.js';
 
 const dataPromise = getData(() => {});
 
@@ -21,4 +21,4 @@ dataPromise
     changeFilters(data);
   });
 
-setUserFormSubmit(closeUploadModal);
+setUserFormSubmit(onCloseUploadModal);

@@ -1,6 +1,6 @@
 import { sendData } from './api.js';
 import { showSuccessMessage, showErrorMessage } from './modal-message.js';
-import { openUploadModal, closeUploadModal } from './user-modals.js';
+import { openUploadModal, onCloseUploadModal } from './user-modals.js';
 
 const uploadFileButton = document.querySelector('#upload-file');
 const imgUploadOverlay = document.querySelector('.img-upload__overlay');
@@ -17,7 +17,7 @@ uploadFileButton.addEventListener('change', () => {
 
     openUploadModal();
 
-    imgUploadBtnCancel.addEventListener('click', closeUploadModal);
+    imgUploadBtnCancel.addEventListener('click', onCloseUploadModal);
   };
 }, false);
 

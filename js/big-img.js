@@ -1,4 +1,4 @@
-import { openPictureModal, closePictureModal } from './user-modals.js';
+import { openPictureModal, onClosePictureModal } from './user-modals.js';
 
 const AVATAR_SIZE = 35;
 const COMMENTS_STEP = 5;
@@ -35,7 +35,7 @@ const showComment = ({ avatar, name, message }) => {
 };
 
 const showComments = (comments) => comments.forEach(showComment);
-const showMoreComments = () => {
+const onShowMoreComments = () => {
   const displayedCommentsCount = commentsList.querySelectorAll('.social__comment').length;
   showComments(currentComments.slice(displayedCommentsCount, displayedCommentsCount + COMMENTS_STEP));
   const numberComments = commentsList.querySelectorAll('.social__comment').length;
@@ -56,7 +56,7 @@ const showBigPicture = (array) => {
     socialDescription.textContent = element.description;
     commentsList.innerHTML = '';
     currentComments = element.comments;
-    showMoreComments(element.comments);
+    onShowMoreComments(element.comments);
   };
 
   document.querySelector('.pictures').addEventListener('click', (evt) => {
@@ -70,8 +70,8 @@ const showBigPicture = (array) => {
 
     openPictureModal();
     bigPictureTemplate(photo);
-    pictureCloseElement.addEventListener('click', closePictureModal);
+    pictureCloseElement.addEventListener('click', onClosePictureModal);
   });
 };
 
-export { showBigPicture, showMoreComments };
+export { showBigPicture, onShowMoreComments };
