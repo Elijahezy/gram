@@ -2,6 +2,7 @@ import { onModalMessageHide } from './modal-message.js';
 
 const ALERT_SHOW_TIME = 5000;
 const MAX_COMMENT_LENGTH = 140;
+const RERENDER_DELAY = 500;
 
 const isEscEvent = (evt) => evt.key === 'Escape' || evt.key === 'Esc';
 
@@ -19,11 +20,11 @@ const hasDuplicates = (array) => {
 
 const showAlert = (message) => {
   const alertContainer = document.createElement('div');
-  alertContainer.style.zIndex = 100;
+  alertContainer.style.zIndex = '100';
   alertContainer.style.position = 'absolute';
-  alertContainer.style.left = 0;
-  alertContainer.style.top = 0;
-  alertContainer.style.right = 0;
+  alertContainer.style.left = '0';
+  alertContainer.style.top = '0';
+  alertContainer.style.right = '0';
   alertContainer.style.padding = '30px 10px';
   alertContainer.style.fontSize = '30px';
   alertContainer.style.textAlign = 'center';
@@ -41,7 +42,7 @@ const showAlert = (message) => {
 // Функция взята из интернета и доработана
 // Источник - https://www.freecodecamp.org/news/javascript-debounce-example
 
-const debounce = (callback, timeoutDelay = 500) => {
+const debounce = (callback, timeoutDelay = RERENDER_DELAY) => {
   let timeoutId;
 
   return (...rest) => {

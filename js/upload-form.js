@@ -35,4 +35,4 @@ const setUserFormSubmit = () => {
   });
 };
 
-export { setUserFormSubmit};
+export { setUserFormSubmit };

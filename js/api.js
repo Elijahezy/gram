@@ -10,24 +10,25 @@ const onResponseCallback = (response) => {
   throw new Error(`${response.status} — ${response.statusText}`);
 };
 
-const getData = (onSuccess) => fetch(URL_GET_DATA)
-  .then(onResponseCallback)
+const customFetch = (url, body = null) => fetch(url,
+  {
+    method: body ? 'POST' : 'GET',
+    body,
+  },
+).then(onResponseCallback);
+
+const getData = (onSuccess) => customFetch(URL_GET_DATA)
   .then(onSuccess())
   .catch(() => {
     showAlert('Не удалось получить данные с сервера. Попробуйте ещё раз.');
-  });
+  },
+  );
 
-const sendData = (onSuccess, body) => {
-  fetch(URL_SEND_DATA,
-    {
-      method: 'POST',
-      body,
-    },
-  )
-    .then(onResponseCallback)
-    .then(onSuccess())
+const sendData = (onSuccess, onFail, body) => {
+  customFetch(URL_SEND_DATA, body)
+    .then(onSuccess)
     .catch(() => {
-      showAlert();
+      showAlert('Не удалось отправить данные на сервер. Попробуйте ещё раз.');
     });
 };
 export { getData, sendData };

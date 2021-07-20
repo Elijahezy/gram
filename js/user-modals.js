@@ -34,26 +34,26 @@ const onPictureEscKeydown = (evt) => {
   }
 };
 
-function openPictureModal () {
+const openPictureModal = () => {
   bigPicture.classList.remove('hidden');
   document.body.classList.add('modal-open');
 
   document.addEventListener('keydown', onPictureEscKeydown);
   commentsLoaderButton.addEventListener('click', onShowMoreComments);
-}
+};
 
-function onClosePictureModal () {
+const onClosePictureModal = () => {
   bigPicture.classList.add('hidden');
   document.body.classList.remove('modal-open');
 
   commentsLoaderButton.removeEventListener('click', onShowMoreComments);
   document.removeEventListener('keydown', onPictureEscKeydown);
   pictureCloseButton.removeEventListener('click', onClosePictureModal);
-}
+};
 
 // Код для закрытия загрузки изображения
 
-function onClosePictureDescriptionModal () {
+const onClosePictureDescriptionModal = () => {
   const valueLength = textDescriptionField.value.length;
   if (valueLength > MAX_COMMENT_LENGTH) {
     textDescriptionField.setCustomValidity(`Удалите лишние ${  valueLength - MAX_COMMENT_LENGTH } симв.`);
@@ -61,9 +61,9 @@ function onClosePictureDescriptionModal () {
     textDescriptionField.setCustomValidity('');
   }
   textDescriptionField.reportValidity();
-}
+};
 
-function onClosePictureHashtagModal () {
+const onClosePictureHashtagModal = () => {
   const arrayHashtags = textHashtagsField.value.trim().split(' ').filter((tag) => tag);
 
   arrayHashtags.find((item) => {
@@ -81,7 +81,7 @@ function onClosePictureHashtagModal () {
     }
     textHashtagsField.reportValidity();
   });
-}
+};
 
 const onUploadModalEscKeydown = (evt) => {
   if (textHashtagsField === document.activeElement || textDescriptionField === document.activeElement) {
@@ -104,7 +104,7 @@ const onUploadModalEscKeydown = (evt) => {
     document.removeEventListener('keydown', onUploadModalEscKeydown);
   }
 };
-function openUploadModal () {
+const openUploadModal = () => {
   imgUploadOverlay.classList.remove('hidden');
   document.body.classList.add('modal-open');
 
@@ -117,9 +117,9 @@ function openUploadModal () {
 
   activateScaleChanger();
   onEffects();
-}
+};
 
-function onCloseUploadModal () {
+const onCloseUploadModal = () => {
   imgUploadOverlay.classList.add('hidden');
   document.body.classList.remove('modal-open');
 
@@ -133,6 +133,6 @@ function onCloseUploadModal () {
   textDescriptionField.removeEventListener('input', onClosePictureDescriptionModal);
   textHashtagsField.removeEventListener('input', onClosePictureHashtagModal);
   document.removeEventListener('keydown', onUploadModalEscKeydown);
-}
+};
 
 export { openPictureModal, onClosePictureModal, openUploadModal, onCloseUploadModal };

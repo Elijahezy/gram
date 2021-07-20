@@ -26,20 +26,11 @@ const clearPhotos = () => {
   });
 };
 
-const getDefaultPictures = (pictures) => {
-  const defaultPictures = pictures.sort((a, b) => a.id > b.id ? 1 : -1);
-  return defaultPictures;
-};
+const getDefaultPictures = (pictures) => pictures.sort((a, b) => a.id > b.id ? 1 : -1);
 
-const getRandomPictures = (pictures) => {
-  const randomPictures = pictures.sort(() => Math.random() - 0.5).slice(0, NUMBER_RANDOM_PICTURES);
-  return randomPictures;
-};
+const getRandomPictures = (pictures) => pictures.sort(() => Math.random() - 0.5).slice(0, NUMBER_RANDOM_PICTURES);
 
-const getDiscussedPictures = (pictures) => {
-  const discussedPictures = pictures.sort((a, b) => a.comments.length < b.comments.length ? 1 : -1);
-  return discussedPictures;
-};
+const getDiscussedPictures = (pictures) => pictures.sort((a, b) => a.comments.length < b.comments.length ? 1 : -1);
 
 const setFilter = (evt, pictures) => {
   clearPhotos();
